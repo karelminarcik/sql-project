@@ -319,3 +319,67 @@ select
 	SQRT(SUM(POWER(avg_gdp_diff, 2)) * SUM(POWER(avg_food_diff, 2)))
 from correL_food_data_prepared
 ;
+
+
+-- korelace shifted
+
+-- shifted data 
+create or replace view shifted_data as
+    SELECT 
+        rok,
+        GDP_percentage_change,
+        LAG(payroll_percentage_change) OVER (ORDER BY rok) AS shifted_payroll_percentage_change,
+        LAG(food_percentage_change) OVER (ORDER BY rok) AS shifted_food_percentage_change
+    FROM correl;
+    
+select * from shifted_data;
+
+
+-- korelace shifted payroll
+
+with correL_shifted_data_prepared as (
+SELECT 
+    rok,
+    shifted_payroll_percentage_change,
+    avg_payroll,
+    shifted_payroll_percentage_change - avg_payroll AS avg_payroll_diff,
+    GDP_percentage_change,
+    avg_gdp,
+    GDP_percentage_change - avg_gdp AS avg_gdp_diff
+FROM 
+    shifted_data,
+    (SELECT 
+         AVG(shifted_payroll_percentage_change) AS avg_payroll, 
+         AVG(GDP_percentage_change) AS avg_gdp 
+     FROM 
+         shifted_data) AS avg_values
+)
+select 
+	SUM(avg_payroll_diff * avg_gdp_diff) /
+	SQRT(SUM(POWER(avg_gdp_diff, 2)) * SUM(POWER(avg_payroll_diff, 2)))
+from correL_shifted_data_prepared;
+
+
+-- korelace shifted food
+
+with correL_shifted_food_data_prepared as (
+SELECT 
+    rok,
+    shifted_food_percentage_change,
+    avg_food,
+    shifted_food_percentage_change - avg_food AS avg_food_diff,
+    GDP_percentage_change,
+    avg_gdp,
+    GDP_percentage_change - avg_gdp AS avg_gdp_diff
+FROM 
+    shifted_data,
+    (SELECT 
+         AVG(shifted_food_percentage_change) AS avg_food, 
+         AVG(GDP_percentage_change) AS avg_gdp 
+     FROM 
+         shifted_data) AS avg_values
+)
+select 
+	SUM(avg_food_diff * avg_gdp_diff) /
+	SQRT(SUM(POWER(avg_gdp_diff, 2)) * SUM(POWER(avg_food_diff, 2)))
+from correL_shifted_food_data_prepared;
