@@ -1,5 +1,5 @@
 -- Potraviny dle kvartalu
-CREATE OR REPLACE VIEW potraviny_dle_kvartalu AS
+CREATE OR REPLACE VIEW v_km_potraviny_dle_kvartalu AS
 SELECT  
     cpc.name AS potravina,
     cp.value AS cena,
@@ -31,7 +31,7 @@ SELECT
     jednotka,
     lokalita,
     year
-FROM potraviny_dle_kvartalu p 
+FROM v_km_potraviny_dle_kvartalu p 
 GROUP BY potravina, year, lokalita, mnozstvi, jednotka
 ORDER BY potravina, year, lokalita;
 

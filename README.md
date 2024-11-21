@@ -2,7 +2,7 @@
 
 ## Úvod do projektu
 
-Tento projekt je zaměřen na zodpovězení výzkumných otázek týkajících se dostupnosti základních potravin široké veřejnosti v České republice. Cílem je připravit robustní datové podklady, které umožní analyzovat vztah mezi příjmy a cenami potravin, a porovnat je s makroekonomickými indikátory, jako je HDP a GINI koeficient, ve vybraném časovém období.
+Tento projekt je zaměřen na zodpovězení výzkumných otázek týkajících se dostupnosti základních potravin široké veřejnosti v České republice. Cílem je připravit robustní datové podklady, které umožní analyzovat vztah mezi příjmy a cenami potravin, a porovnat je s makroekonomickými indikátory, jako je HDP, ve vybraném časovém období.
 
 ---
 
@@ -53,7 +53,7 @@ Tento projekt je zaměřen na zodpovězení výzkumných otázek týkajících s
 
 3. **Dokumentace:**
    - Popis vytvořených tabulek.
-   - Seznam chybějících hodnot a další poznámky k datům.
+   - Zodpovězení otázek
 
 ---
 
@@ -79,7 +79,8 @@ Tento projekt je zaměřen na zodpovězení výzkumných otázek týkajících s
 - **`primary_table.sql`:** SQL skript pro vytvoření tabulky `t_{jmeno}_{prijmeni}_project_SQL_primary_final`.
 - **`secondary_table.sql`:** SQL skript pro vytvoření tabulky `t_{jmeno}_{prijmeni}_project_SQL_secondary_final`.
 - **`queries.sql`:** SQL dotazy pro zodpovězení výzkumných otázek.
-- **`notes.md`:** Dokumentace s poznámkami k projektu.
+- **`dokumentace.md`:** Dokumentace s poznámkami k projektu.
+- **`queries.sql`:** Sada SQL dotazů k zodpovězení zadaných otázek.
 
 ---
 
@@ -93,4 +94,8 @@ Tento projekt je zaměřen na zodpovězení výzkumných otázek týkajících s
 
 ## Kontakt
 
-Pro více informací nebo dotazy se obracejte na autora projektu.
+Pro více informací nebo dotazy se obracejte na autora projektu - Karel Minarcik
+
+[Spoj se se mnou na LinkedIn](https://www.linkedin.com/in/karel-minarcik/)
+
+[Nebo mě můžeš zastihnout také na emailu](mailto:karlos.minarcik@gmail.com)

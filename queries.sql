@@ -1,4 +1,4 @@
--- Question 1
+-- Otazka 1
 CREATE OR REPLACE VIEW salary_grow AS
 SELECT 
     obor,
@@ -19,7 +19,7 @@ SELECT *
 FROM salary_grow
 WHERE difference IS NOT NULL;
 
--- Question 2
+-- Otazka 2
 SELECT 
     rok,
     prumerna_mzda,
@@ -36,7 +36,7 @@ WHERE
 ORDER BY 
     rok, potravina;
 
---Question 3
+--Otazka 3
 WITH price_changes AS (
     SELECT 
         potravina,
@@ -71,7 +71,7 @@ ORDER BY
     avg_percentage_growth ASC
 LIMIT 1;
 
--- Question 4
+-- Otazka 4
 WITH food_percentage_change AS (
     SELECT 
         potravina,
@@ -129,7 +129,7 @@ ON
 ORDER BY 
     fac.rok;
 
--- Question 5
+-- Otazka 5
 CREATE OR REPLACE VIEW correl AS
 WITH food_percentage_change AS (
     SELECT 
@@ -205,7 +205,7 @@ ORDER BY
 
 SELECT * FROM correl;
 
--- Correl payroll
+-- Korelace platy
 WITH correL_data_prepared AS (
     SELECT 
         rok,
@@ -229,7 +229,7 @@ SELECT
 FROM 
     correL_data_prepared;
 
--- Correl food
+-- Korelace potraviny
 WITH correL_food_data_prepared AS (
     SELECT 
         rok,
@@ -253,9 +253,9 @@ SELECT
 FROM 
     correL_food_data_prepared;
 
--- Correl shifted
+-- Korelace posunuta
 
--- Shifted data
+-- Posunuta data
 CREATE OR REPLACE VIEW shifted_data AS
     SELECT 
         rok,
@@ -267,7 +267,7 @@ CREATE OR REPLACE VIEW shifted_data AS
 
 SELECT * FROM shifted_data;
 
--- Correl shifted payroll
+-- korelace posunuta platy
 WITH correL_shifted_data_prepared AS (
     SELECT 
         rok,
@@ -291,7 +291,7 @@ SELECT
 FROM 
     correL_shifted_data_prepared;
 
--- Correl shifted food
+-- Korelace posunuta potraviny
 WITH correL_shifted_food_data_prepared AS (
     SELECT 
         rok,
