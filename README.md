@@ -68,7 +68,7 @@ Tento projekt je zaměřen na zodpovězení výzkumných otázek týkajících s
 
 3. **Prezentace výsledků:**
    - Uložení dat a dotazů do GitHub repozitáře.
-   - Popis mezivýsledků, chybějících hodnot a metodologie.
+   - Popis mezivýsledků.
 
 ---
 
