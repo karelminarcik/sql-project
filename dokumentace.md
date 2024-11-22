@@ -55,14 +55,16 @@ Viz soubor `queries.sql` v tomto repozitáři.
    **Výsledek:** Ne. I když v roce 2009 se hraniční hodnotě 10% s hodnotou 9.39% přiblížil.
 
 5. **Má HDP vliv na změny ve mzdách a cenách potravin v témže roce?**  
-   **Výsledek:** Korelace:  
+   **Výsledek korelace:** 
+   
    - HDP vs. ceny potravin: 0.34  
    - HDP vs. mzdy: 0.49  
    **Interpretace:** Slabší až střední pozitivní korelace.
    HDP má pozitivní vliv na změny cen potravin i mezd ve stejném roce. Tento vliv je však u cen potravin slabý a u mezd středně silný. Růst HDP tedy pravděpodobně více podporuje růst mezd než růst cen potravin.
 
    **Má HDP vliv na změny ve mzdách a cenách potravin v nasledujicím roce?**  
-   **Výsledek:** Korelace:  
+   **Výsledek korelace:** 
+
    - HDP vs. ceny potravin: -0.54  
    - HDP vs. mzdy: -0.23  
    **Interpretace:** Slabší až střední negativní korelace. 
