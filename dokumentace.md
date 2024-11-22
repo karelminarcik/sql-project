@@ -71,6 +71,7 @@ Viz soubor `queries.sql` v tomto repozitáři.
 
    **Interpretace:** Slabší až střední negativní korelace. 
    HDP má výraznější vliv na ceny potravin než na mzdy, ale v obou případech jde o negativní vztah. To znamená, že růst HDP obecně spíše snižuje ceny potravin a má jen mírný, téměř zanedbatelný vliv na snižování mezd.
+   
    **Závěr:** Vztah naznačený korelací však nemusí být nutně příčinný – na obě proměnné mohou mít vliv další faktory, například inflace, produktivita nebo vládní politika.
 
 
