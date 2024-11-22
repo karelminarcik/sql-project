@@ -58,7 +58,8 @@ Viz soubor `queries.sql` v tomto repozitáři.
    **Výsledek korelace:** 
    
    - HDP vs. ceny potravin: 0.34  
-   - HDP vs. mzdy: 0.49  
+   - HDP vs. mzdy: 0.49 
+    
    **Interpretace:** Slabší až střední pozitivní korelace.
    HDP má pozitivní vliv na změny cen potravin i mezd ve stejném roce. Tento vliv je však u cen potravin slabý a u mezd středně silný. Růst HDP tedy pravděpodobně více podporuje růst mezd než růst cen potravin.
 
@@ -67,6 +68,7 @@ Viz soubor `queries.sql` v tomto repozitáři.
 
    - HDP vs. ceny potravin: -0.54  
    - HDP vs. mzdy: -0.23  
+
    **Interpretace:** Slabší až střední negativní korelace. 
    HDP má výraznější vliv na ceny potravin než na mzdy, ale v obou případech jde o negativní vztah. To znamená, že růst HDP obecně spíše snižuje ceny potravin a má jen mírný, téměř zanedbatelný vliv na snižování mezd.
    **Závěr:** Vztah naznačený korelací však nemusí být nutně příčinný – na obě proměnné mohou mít vliv další faktory, například inflace, produktivita nebo vládní politika.
