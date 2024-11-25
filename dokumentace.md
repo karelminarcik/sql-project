@@ -45,8 +45,8 @@ Viz soubor `queries.sql` v tomto repozitáři.
 
 2. **Kolik je možné si koupit litrů mléka a kilogramů chleba za první a poslední srovnatelné období?**  
    **Výsledek:**  
-   - 2006: 1192 ks chleba, 1331 l mléka  
-   - 2018: 1300 ks chleba, 1590 l mléka.
+   - 2006: 1140 ks chleba, 1273 l mléka  
+   - 2018: 1311 ks chleba, 1603 l mléka.
 
 3. **Která kategorie potravin zdražuje nejpomaleji?**  
    **Výsledek:** Cukr krystalový (0.000772 % ročně).
