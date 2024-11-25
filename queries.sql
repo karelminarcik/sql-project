@@ -17,16 +17,18 @@ FROM v_km_salary_grow
 WHERE difference IS NOT NULL; 
 
 -- Otazka 2
-select 
-	year,
-	AVG(average_salary),
-	food,
-    average_year_price,
-    ROUND(average_salary / average_year_price) AS total_products_for_salary
-	from t_karel_minarcik_project_SQL_primary_final
-where year in (2006,2018)
-AND (food = 'mléko polotučné pasterované' OR food = 'chléb konzumní kmínový')
-group by year, food;
+SELECT 
+    year,
+    AVG(average_salary) AS average_salary,
+    food,
+    AVG(average_year_price) AS average_year_price,
+    ROUND(AVG(average_salary) / AVG(average_year_price)) AS total_products_for_salary
+FROM t_karel_minarcik_project_SQL_primary_final
+WHERE year IN (2006, 2018)
+  AND (food = 'mléko polotučné pasterované' OR food = 'chléb konzumní kmínový')
+GROUP BY year, food
+ORDER BY year, food;
+
 
 --Otazka 3
 WITH price_changes AS (
