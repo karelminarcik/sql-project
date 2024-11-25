@@ -202,8 +202,6 @@ where payroll_percentage_change
 ORDER BY 
     fac.year;
 
-SELECT * FROM correl;
-
 -- Korelace platy
 WITH correL_data_prepared AS (
     SELECT 
