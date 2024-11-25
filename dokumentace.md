@@ -11,14 +11,14 @@ Tento dokument popisuje proces zpracování dat, vytvoření tabulek a výstupy 
 - **Popis:** Sjednocená data o mzdách a cenách potravin v ČR.
 - **Zdrojová data:** `czechia_payroll`, `czechia_price`.
 - **Klíčové sloupce:**
-  - `obor`: Odvětví.
-  - `prumerna_mzda`: Průměrná mzda (v CZK)
-  - `rok`: Rok.
-  - `potravina`: Druh potraviny
-  - `prumerna_cena_za_rok`: Průměrná cena potraviny za daný rok (v CZK)
-  - `mnozstvi`: Množtví 
-  - `jednotka`: Jednotka v jaké je potravina vedena (kg, l, g, ks)
-  - `lokalita`: Lokalita  
+  - `industry`: Odvětví.
+  - `average_salary`: Průměrná mzda (v CZK)
+  - `year`: Rok.
+  - `food`: Druh potraviny
+  - `average_year_price`: Průměrná cena potraviny za daný rok (v CZK)
+  - `amounth`: Množtví 
+  - `unit`: Jednotka v jaké je potravina vedena (kg, l, g, ks)
+  - `locality`: Lokalita  
 
 
 ### Tabulka `t_{jmeno}_{prijmeni}_project_SQL_secondary_final`
@@ -71,7 +71,7 @@ Viz soubor `queries.sql` v tomto repozitáři.
 
    **Interpretace:** Slabší až střední negativní korelace. 
    HDP má výraznější vliv na ceny potravin než na mzdy, ale v obou případech jde o negativní vztah. To znamená, že růst HDP obecně spíše snižuje ceny potravin a má jen mírný, téměř zanedbatelný vliv na snižování mezd.
-   
+
    **Závěr:** Vztah naznačený korelací však nemusí být nutně příčinný – na obě proměnné mohou mít vliv další faktory, například inflace, produktivita nebo vládní politika.
 
 

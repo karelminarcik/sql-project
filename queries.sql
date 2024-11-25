@@ -1,69 +1,66 @@
 -- Otazka 1
-CREATE OR REPLACE VIEW salary_grow AS
+CREATE OR REPLACE VIEW v_km_salary_grow AS
 SELECT 
-    obor,
-    rok,
-    prumerna_mzda AS posledni_rok_mzda,
-    LAG(prumerna_mzda, 12) OVER (PARTITION BY obor ORDER BY rok) AS prvni_rok_mzda,
-    (prumerna_mzda - LAG(prumerna_mzda, 12) OVER (PARTITION BY obor ORDER BY rok)) AS difference
+    industry,
+    average_salary AS last_year_salary,
+    LAG(average_salary, 12) OVER (PARTITION BY industry ORDER BY year) AS first_year_salary,
+    (average_salary - LAG(average_salary, 12) OVER (PARTITION BY industry ORDER BY year)) AS difference
 FROM 
     t_karel_minarcik_project_sql_primary_final
 WHERE 
-    obor IS NOT NULL
+    industry IS NOT null
 GROUP BY
-    prumerna_mzda
-ORDER BY 
-    obor, rok;
+    average_salary;
 
 SELECT * 
-FROM salary_grow
-WHERE difference IS NOT NULL;
+FROM v_km_salary_grow
+WHERE difference IS NOT NULL; 
 
 -- Otazka 2
 SELECT 
-    rok,
-    prumerna_mzda,
-    potravina,
-    prumerna_cena_za_rok,
-    ROUND(prumerna_mzda / prumerna_cena_za_rok) AS pocet_produktu_za_mzdu
+    year,
+    average_salary,
+    food,
+    avearage_year_price,
+    ROUND(average_salary / avearage_year_price) AS total_products_for_salary
 FROM 
     t_karel_minarcik_project_sql_primary_final tkmpspf
 WHERE 
-    lokalita IS NULL
-    AND rok IN (2006, 2018)
-    AND (potravina = 'mléko polotučné pasterované' OR potravina = 'chléb konzumní kmínový')
-    AND obor IS NULL
+    locality IS NULL
+    AND year IN (2006, 2018)
+    AND (food = 'mléko polotučné pasterované' OR food = 'chléb konzumní kmínový')
+    AND industry IS NULL
 ORDER BY 
-    rok, potravina;
+    year, food;
 
 --Otazka 3
 WITH price_changes AS (
     SELECT 
-        potravina,
-        rok,
-        prumerna_cena_za_rok,
-        LAG(prumerna_cena_za_rok) OVER (PARTITION BY potravina ORDER BY rok) AS previous_year_price,
+        food,
+        year,
+        average_year_price,
+        LAG(average_year_price) OVER (PARTITION BY food ORDER BY year) AS previous_year_price,
         ROUND(
-            (prumerna_cena_za_rok - LAG(prumerna_cena_za_rok) OVER (PARTITION BY potravina ORDER BY rok)) 
-            / LAG(prumerna_cena_za_rok) OVER (PARTITION BY potravina ORDER BY rok) * 100, 
+            (average_year_price - LAG(average_year_price) OVER (PARTITION BY food ORDER BY year)) 
+            / LAG(average_year_price) OVER (PARTITION BY food ORDER BY year) * 100, 
             2
         ) AS percentage_change
     FROM 
-        t_karel_minarcik_project_sql_primary_final tkmpspf
+        t_karel_minarcik_project_sql_primary_final
 )
 , average_price_growth AS (
     SELECT 
-        potravina,
+        food,
         AVG(percentage_change) AS avg_percentage_growth
     FROM 
         price_changes
     WHERE 
         percentage_change IS NOT NULL -- Exclude rows where there is no previous year
     GROUP BY 
-        potravina
+        food
 )
 SELECT 
-    potravina, 
+    food, 
     avg_percentage_growth
 FROM 
     average_price_growth
@@ -74,14 +71,14 @@ LIMIT 1;
 -- Otazka 4
 WITH food_percentage_change AS (
     SELECT 
-        potravina,
-        rok,
-        prumerna_cena_za_rok,
-        lokalita,
-        LAG(prumerna_cena_za_rok, 1) OVER (PARTITION BY potravina ORDER BY rok) AS previous_year_price,
+        food,
+        year,
+        average_year_price,
+        locality,
+        LAG(average_year_price, 1) OVER (PARTITION BY food ORDER BY year) AS previous_year_price,
         ROUND(
-            (prumerna_cena_za_rok - LAG(prumerna_cena_za_rok, 1) OVER (PARTITION BY potravina ORDER BY rok)) 
-            / LAG(prumerna_cena_za_rok, 1) OVER (PARTITION BY potravina ORDER BY rok) * 100, 
+            (average_year_price - LAG(average_year_price, 1) OVER (PARTITION BY food ORDER BY year)) 
+            / LAG(average_year_price, 1) OVER (PARTITION BY food ORDER BY year) * 100, 
             2
         ) AS percentage_change
     FROM 
@@ -89,34 +86,35 @@ WITH food_percentage_change AS (
 ),
 food_avg_change AS (
     SELECT 
-        rok,
+        year,
         AVG(percentage_change) AS avg_percentage_change_per_year
     FROM 
         food_percentage_change
     WHERE 
-        lokalita IS NULL
+        locality IS NULL
         AND percentage_change IS NOT NULL
         AND percentage_change <> 0
     GROUP BY 
-        rok
+        year
 ),
 payroll_percentage_change AS (
     SELECT 
-        year AS rok,
-        prumerna_mzda,
-        LAG(prumerna_mzda, 1) OVER (ORDER BY year) AS previous_year_salary,
+        year,
+        average_salary,
+        LAG(average_salary, 1) OVER (ORDER BY year) AS previous_year_salary,
         ROUND(
-            (prumerna_mzda - LAG(prumerna_mzda, 1) OVER (ORDER BY year)) 
-            / LAG(prumerna_mzda, 1) OVER (ORDER BY year) * 100, 
+            (average_salary - LAG(average_salary, 1) OVER (ORDER BY year)) 
+            / LAG(average_salary, 1) OVER (ORDER BY year) * 100, 
             2
         ) AS payroll_percentage_change
     FROM 
-        prumerna_mzda_roky
+        t_karel_minarcik_project_sql_primary_final
     WHERE 
-        obor IS NULL
+        industry IS null
+    group by year
 )
 SELECT 
-    fac.rok,
+    fac.year,
     fac.avg_percentage_change_per_year AS food_percentage_change,
     ppc.payroll_percentage_change,
     ABS(fac.avg_percentage_change_per_year - ppc.payroll_percentage_change) AS difference_food_vs_payroll
@@ -125,54 +123,54 @@ FROM
 LEFT JOIN 
     payroll_percentage_change ppc
 ON 
-    fac.rok = ppc.rok
+    fac.year = ppc.year
 ORDER BY 
-    fac.rok;
+    fac.year;
 
 -- Otazka 5
 CREATE OR REPLACE VIEW correl AS
 WITH food_percentage_change AS (
     SELECT 
-        potravina,
-        rok,
-        prumerna_cena_za_rok,
-        lokalita,
-        LAG(prumerna_cena_za_rok, 1) OVER (PARTITION BY potravina ORDER BY rok) AS previous_year_price,
+        food,
+        year,
+        average_year_price,
+        locality,
+        LAG(average_year_price, 1) OVER (PARTITION BY food ORDER BY year) AS previous_year_price,
         ROUND(
-            (prumerna_cena_za_rok - LAG(prumerna_cena_za_rok, 1) OVER (PARTITION BY potravina ORDER BY rok)) 
-            / LAG(prumerna_cena_za_rok, 1) OVER (PARTITION BY potravina ORDER BY rok) * 100, 
+            (average_year_price - LAG(average_year_price, 1) OVER (PARTITION BY food ORDER BY year)) 
+            / LAG(average_year_price, 1) OVER (PARTITION BY food ORDER BY year) * 100, 
             2
         ) AS percentage_change
     FROM 
-        t_karel_minarcik_project_sql_primary_final tkmpspf
+        t_karel_minarcik_project_sql_primary_final
 ),
 food_avg_change AS (
     SELECT 
-        rok,
+        year,
         AVG(percentage_change) AS avg_percentage_change_per_year
     FROM 
         food_percentage_change
     WHERE 
-        lokalita IS NULL
+        locality IS NULL
         AND percentage_change IS NOT NULL
         AND percentage_change <> 0
     GROUP BY 
-        rok
+        year
 ),
 payroll_percentage_change AS (
     SELECT 
-        year AS rok,
-        prumerna_mzda,
-        LAG(prumerna_mzda, 1) OVER (ORDER BY year) AS previous_year_salary,
+        year,
+        average_salary,
+        LAG(average_salary, 1) OVER (ORDER BY year) AS previous_year_salary,
         ROUND(
-            (prumerna_mzda - LAG(prumerna_mzda, 1) OVER (ORDER BY year)) 
-            / LAG(prumerna_mzda, 1) OVER (ORDER BY year) * 100, 
+            (average_salary - LAG(average_salary, 1) OVER (ORDER BY year)) 
+            / LAG(average_salary, 1) OVER (ORDER BY year) * 100, 
             2
         ) AS payroll_percentage_change
     FROM 
-        prumerna_mzda_roky
+        t_karel_minarcik_project_sql_primary_final
     WHERE 
-        obor IS NULL
+        industry IS NULL
 ),
 gdp_change AS (
     SELECT 
@@ -190,25 +188,26 @@ gdp_change AS (
         country = 'Czech Republic'
 )
 SELECT 
-    fac.rok AS rok,
+    fac.year AS year,
     fac.avg_percentage_change_per_year AS food_percentage_change,
     ppc.payroll_percentage_change,
     gc.GDP_percentage_change
 FROM 
     food_avg_change fac
 LEFT JOIN 
-    payroll_percentage_change ppc ON fac.rok = ppc.rok
+    payroll_percentage_change ppc ON fac.year = ppc.year
 LEFT JOIN 
-    gdp_change gc ON fac.rok = gc.year
+    gdp_change gc ON fac.year = gc.year
+where payroll_percentage_change
 ORDER BY 
-    fac.rok;
+    fac.year;
 
 SELECT * FROM correl;
 
 -- Korelace platy
 WITH correL_data_prepared AS (
     SELECT 
-        rok,
+        year,
         payroll_percentage_change,
         avg_payroll,
         payroll_percentage_change - avg_payroll AS avg_payroll_diff,
@@ -232,7 +231,7 @@ FROM
 -- Korelace potraviny
 WITH correL_food_data_prepared AS (
     SELECT 
-        rok,
+        year,
         food_percentage_change,
         avg_food,
         food_percentage_change - avg_food AS avg_food_diff,
@@ -258,10 +257,10 @@ FROM
 -- Posunuta data
 CREATE OR REPLACE VIEW shifted_data AS
     SELECT 
-        rok,
+        year,
         GDP_percentage_change,
-        LAG(payroll_percentage_change) OVER (ORDER BY rok) AS shifted_payroll_percentage_change,
-        LAG(food_percentage_change) OVER (ORDER BY rok) AS shifted_food_percentage_change
+        LAG(payroll_percentage_change) OVER (ORDER BY year) AS shifted_payroll_percentage_change,
+        LAG(food_percentage_change) OVER (ORDER BY year) AS shifted_food_percentage_change
     FROM 
         correl;
 
@@ -270,7 +269,7 @@ SELECT * FROM shifted_data;
 -- korelace posunuta platy
 WITH correL_shifted_data_prepared AS (
     SELECT 
-        rok,
+        year,
         shifted_payroll_percentage_change,
         avg_payroll,
         shifted_payroll_percentage_change - avg_payroll AS avg_payroll_diff,
@@ -294,7 +293,7 @@ FROM
 -- Korelace posunuta potraviny
 WITH correL_shifted_food_data_prepared AS (
     SELECT 
-        rok,
+        year,
         shifted_food_percentage_change,
         avg_food,
         shifted_food_percentage_change - avg_food AS avg_food_diff,
@@ -314,4 +313,3 @@ SELECT
     SQRT(SUM(POWER(avg_gdp_diff, 2)) * SUM(POWER(avg_food_diff, 2)))
 FROM 
     correL_shifted_food_data_prepared;
-

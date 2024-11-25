@@ -1,5 +1,3 @@
--- Druhá tabulka
-
 CREATE OR REPLACE TABLE t_karel_minarcik_project_sql_secondary_final AS (
     WITH all_economies AS (
         SELECT 
@@ -24,10 +22,9 @@ CREATE OR REPLACE TABLE t_karel_minarcik_project_sql_secondary_final AS (
         ae.GDP,
         ae.population,
         ae.gini
-    FROM all_economies ae
-    RIGHT JOIN european_region er
+    FROM european_region er
+    LEFT JOIN all_economies ae
         ON er.country = ae.country
     WHERE er.region IS NOT NULL
     GROUP BY ae.year, er.country
-    ORDER BY er.country, ae.year
 );
