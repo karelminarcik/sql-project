@@ -26,6 +26,7 @@ SELECT
 FROM t_karel_minarcik_project_SQL_primary_final
 WHERE year IN (2006, 2018)
   AND (food = 'mléko polotučné pasterované' OR food = 'chléb konzumní kmínový')
+  AND industry is not NULL
 GROUP BY year, food
 
 
